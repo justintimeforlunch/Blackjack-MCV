@@ -3,82 +3,45 @@
  Contact: justintimenguyen@gmail.com                                                                                                                                                                                                                                                    
  School: University of Massachusetts Lowell                                                                                                                                                                                                                                                                                 
  Date Updated: February 11, 2016                                                                                                                                                                                                                              
- Description: Assignment 9 - Implementing Blackjack using the MVC method        
+ Description: Implementing Blackjack using the MVC method        
  Copyright [2016] by Justin Nguyen. All rights reserved.                                                                                                    
  May be freely copied or excerpted for educational purposes with credit to the author.                                                                      
  */
 
-var PlayingCards = [];
-PlayingCards[0] = { "card": "2", "value": 2, "original_distribution": 4, "number_remaining": 4 }; //Card: 2
-PlayingCards[1] = { "card": "3", "value": 3, "original_distribution": 4, "number_remaining": 4 }; //Card: 3
-PlayingCards[2] = { "card": "4", "value": 4, "original_distribution": 4, "number_remaining": 4 }; //Card: 4
-PlayingCards[3] = { "card": "5", "value": 5, "original_distribution": 4, "number_remaining": 4 }; //Card: 5
-PlayingCards[4] = { "card": "6", "value": 6, "original_distribution": 4, "number_remaining": 4 }; //Card: 6
-PlayingCards[5] = { "card": "7", "value": 7, "original_distribution": 4, "number_remaining": 4 }; //Card: 7
-PlayingCards[6] = { "card": "8", "value": 8, "original_distribution": 4, "number_remaining": 4 }; //Card: 8
-PlayingCards[7] = { "card": "9", "value": 9, "original_distribution": 4, "number_remaining": 4 }; //Card: 9
-PlayingCards[8] = { "card": "10", "value": 10, "original_distribution": 4, "number_remaining": 4 }; //Card: 10
-PlayingCards[9] = { "card": "11", "value": 10, "original_distribution": 4, "number_remaining": 4 }; //Card: Jack
-PlayingCards[10] = { "card": "12", "value": 10, "original_distribution": 4, "number_remaining": 4 }; //Card: Queen
-PlayingCards[11] = { "card": "13", "value": 10, "original_distribution": 4, "number_remaining": 4 }; //Card: King
-//Ace will need to be tested for 1 and 11
-//If score is under 21, Keep it at 11. If the score goes over 21, change it to 1
-PlayingCards[12] = { "card": "14", "value": 1, "original_distribution": 4, "number_remaining": 4 }; //Card: Ace
 
 /*Ready when page is loaded*/
-$(document).ready(function () {
+$(document).ready(function() {
     generateCards();
-    //generateBoard();
-    //toDragAndDrop();
+    DealerHand();
 }); //end ready
 
 /*Global Variables*/
-var cards = "";
-var dealerCards = ""; //generate dealer hand
-var table = ""; //generate scrabble board
-var score = 0;
-var board = [];
-var values = []; // holds the letter's value
-var cards_placed = [];
-var display_letters = "";
-//var alphabet = ""; //created for testing purposes
-
-//TODO: Fix tile placement. The droppable is taking the draggable on the bottom right of it.
+var dealerTotalScore = 0;
+var playerTotalScore = 0;
 
 //generates cards in the Player's hand
 function generateCards() {
     cards = '';
     var cards_value = '';
+    var playerCardScore = 0;
     for (var i = 0; i < 2; i++) {
         var value = Math.floor(Math.random() * PlayingCards.length); //randomize 2 cards
+        PlayingCards[value].number_remaining--;
+
         if (PlayingCards[value].number_remaining === 0) {
             value = Math.floor(Math.random() * PlayingCards.length);
-        }
-        var card_value = PlayingCards[value].card;
-        cards_value += PlayingCards[value].card;
+        } //end of if statement
+
+        var cards_value = PlayingCards[value].card;
         var cardImageUrl = 'img/PlayingCards/PlayingCards';
 
-        cards += "<img id='play-cards" + "' class='card-piece" + card_value + 'a' + "' src='" + cardImageUrl + card_value + 'a' + ".png" + "'></img>";
-        
-        //values.push([i, PlayingCards[value].value]);
-        //cards_placed.push([i, cards_value]);
-        //console.log(values[i][1]);
+        cards += "<img id='play-cards" + "' class='card-piece" + cards_value + 'a' + "' src='" + cardImageUrl + cards_value + 'a' + ".png" + "'></img>";
 
-        generateScore(PlayingCards[value].value);
-        //console.log(cards_value);
-        //$('#score').html(score);
-        $('#cards_value').html(cards_value);
-        $('#cards').html(cards);
-    }
-}
-
-//TODO: fix to use for both the Player and Dealer.
-//      Make it more general
-//generates the score of both the player and dealer
-function generateScore(scoreResult) {
-    score += scoreResult;
-    //console.log(score);
-    $('#score').html(score);
+        playerTotalScore += PlayingCards[value].value;
+    } //end of forloop
+    $('#cards_value').html(cards_value);
+    $('#cards').html(cards);
+    $('#playerScore').html(playerTotalScore);
 }
 
 //TODO: Fix how the card are displayed
@@ -86,27 +49,163 @@ function generateScore(scoreResult) {
 //will generate the cards in the Dealer's hand
 function DealerHand() {
     dealerCards = '';
-    dealerCardValues = '';
+    var dealerCardValues = '';
+    var dealerCardScore = 0;
     for (var i = 0; i < 2; i++) {
         var value = Math.floor(Math.random() * PlayingCards.length); //randomize 2 cards
         if (PlayingCards[value].number_remaining === 0) {
             value = Math.floor(Math.random() * PlayingCards.length);
         } //end if statement
         var dealerCardValues = PlayingCards[value].card;
-        dealerCardValues += PlayingCards.card;
+        //dealerCardValues += PlayingCards[value].card;
         var cardImageUrl = 'img/PlayingCards/PlayingCards';
 
+        //dealerCardScore = generateScore(PlayingCards[value].value);
+        dealerTotalScore += PlayingCards[value].value;
         //need to make it able to put both card-values in the array but only display 1 and display a facedown card
-        dealerCards += "<img id='play-cards" + "' class='card-piece" + card_value + 'a' + "' src='" + cardImageUrl + card_value + 'a' + ".png" + "'></img>";
+        dealerCards += "<img id='play-cards" + "' class='card-piece" + dealerCardValues + 'a' + "' src='" + cardImageUrl + dealerCardValues + 'a' + ".png" + "'></img>";
+
     } //end forloop
-        dealerCards += "<img id='play-cards class='card-piece' src='" + dealerCardValues + 'a' + ".png" + "></img>";        
-        dealerCards += "<img id='play-cards" + "' class='card-piece" + card_value + 'a' + "' src='" + cardImageUrl + card_value + 'a' + ".png" + "'></img>";
+    $('#dealer_value').html(dealerCardValues);
+    $('#dealerScore').html(dealerTotalScore);
+    $('#dealer_cards').html(dealerCards);
+    //dealerCards += "<img id='play-cards class='card-piece' src='" + dealerCardValues + 'a' + ".png" + "></img>";        
+    //dealerCards += "<img id='play-cards" + "' class='card-piece" + card_value + 'a' + "' src='" + cardImageUrl + card_value + 'a' + ".png" + "'></img>";
 }
 
 //TODO: Generate a new card to add to the current 2 cards of the user.
 //      Needs to generate the cards out of the pool of remaining cards
-/*
-function blackjackHit() {
-    
+$("#hit").click(function() {
+    //generate one new card from deck
+    var value = Math.floor(Math.random() * PlayingCards.length);
+    if (PlayingCards[value].number_remaining === 0) {
+        value = Math.floor(Math.random() * PlayingCards.length);
+    } //end if statement
+
+    var card_value = PlayingCards[value].card;
+    var cardImageUrl = 'img/PlayingCards/PlayingCards';
+
+
+    playerTotalScore += PlayingCards[value].value;
+
+
+    var cardHitValue = "<img id='play-cards" + "' class='card-piece" + card_value + 'a' + "' src='" + cardImageUrl + card_value + 'a' + ".png" + "'></img>";
+    $('#playerScore').replaceWith(playerTotalScore);
+    $('#card_hit').html(cardHitValue);
+});
+
+//TODO: Able to hit more than once card
+$("#stay").click(function() {
+    //if Dealer's score is less than 16, then hit and generate a new card
+    while (dealerTotalScore < 16) {
+        var value = Math.floor(Math.random() * PlayingCards.length);
+
+        if (PlayingCards[value].number_remaining === 0) {
+            value = Math.floor(Math.random() * PlayingCards.length);
+        } //end if statement
+        var card_value = PlayingCards[value].card;
+        var cardImageUrl = 'img/PlayingCards/PlayingCards';
+
+        dealerTotalScore += PlayingCards[value].value;
+        var cardHitValue = "<img id='play-cards" + "' class='card-piece" + card_value + 'a' + "' src='" + cardImageUrl + card_value + 'a' + ".png" + "'></img>";
+        $('#dealerScore').replaceWith(dealerTotalScore);
+        $('#dealer_hit').html(cardHitValue);
+    } //end while statement
+    winner();
+});
+
+//TODO: If it is even
+function winner() {
+    var winner = "";
+    if (playerTotalScore > dealerTotalScore && playerTotalScore < 21) {
+        winner = "<div class='text-center'>Player Wins!</div>";
+        $("#declare-winner").html(winner)
+    } else {
+        winner = "<div class='text-center'>Dealer Wins!</div>";
+        $("#declare-winner").html(winner)
+            //dealer win
+    }
+    return;
 }
-*/
+
+var PlayingCards = [];
+PlayingCards[0] = { //Card: 2
+    "card": "2",
+    "value": 2,
+    "original_distribution": 4,
+    "number_remaining": 4
+}; 
+PlayingCards[1] = { //Card: 3
+    "card": "3",
+    "value": 3,
+    "original_distribution": 4,
+    "number_remaining": 4
+};
+PlayingCards[2] = { //Card: 4
+    "card": "4",
+    "value": 4,
+    "original_distribution": 4,
+    "number_remaining": 4
+};
+PlayingCards[3] = { //Card: 5
+    "card": "5",
+    "value": 5,
+    "original_distribution": 4,
+    "number_remaining": 4
+}; 
+PlayingCards[4] = { //Card: 6
+    "card": "6",
+    "value": 6,
+    "original_distribution": 4,
+    "number_remaining": 4
+};
+PlayingCards[5] = { //Card: 7
+    "card": "7",
+    "value": 7,
+    "original_distribution": 4,
+    "number_remaining": 4
+};
+PlayingCards[6] = { //Card: 8
+    "card": "8",
+    "value": 8,
+    "original_distribution": 4,
+    "number_remaining": 4
+};
+PlayingCards[7] = { //Card: 9
+    "card": "9",
+    "value": 9,
+    "original_distribution": 4,
+    "number_remaining": 4
+};
+PlayingCards[8] = { //Card: 10
+    "card": "10",
+    "value": 10,
+    "original_distribution": 4,
+    "number_remaining": 4
+}; 
+PlayingCards[9] = { //Card: Jack
+    "card": "11",
+    "value": 10,
+    "original_distribution": 4,
+    "number_remaining": 4
+}; 
+PlayingCards[10] = { //Card: Queen
+    "card": "12",
+    "value": 10,
+    "original_distribution": 4,
+    "number_remaining": 4
+};
+PlayingCards[11] = { //Card: King
+    "card": "13",
+    "value": 10,
+    "original_distribution": 4,
+    "number_remaining": 4
+};
+//Ace will need to be tested for 1 and 11
+//If score is under 21, Keep it at 11. If the score goes over 21, change it to 1
+PlayingCards[12] = { //Card: Ace
+    "card": "14",
+    "value": 1,
+    "original_distribution": 4,
+    "number_remaining": 4
+};
