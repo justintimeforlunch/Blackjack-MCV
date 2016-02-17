@@ -12,7 +12,7 @@
     </title>
     <!--
     Name: Justin Nguyen                                                         
-    Contact: justintimenguyen@gmail.com                                                                           School: University of Massachusetts Lowell                                                                    Date Updated: February 11, 2016                                                                               Description: Implementing Blackjack using the MVC method        
+    Contact: justintimenguyen@gmail.com                                                                           School: University of Massachusetts Lowell                                                                    Date Updated: February 16, 2016                                                                               Description: Implementing Blackjack using the MVC method        
     Copyright [2016] by Justin Nguyen. All rights reserved.                                    
     May be freely copied or excerpted for educational purposes with credit to the author.
     -->
@@ -38,19 +38,21 @@
                 <span id="cards"></span>
                 <span id="card_hit"></span>
                 <br>
-                <div id='playerScore'></div>
+                <div class="player-cards" id='playerScore'></div>
                 <!--Card value test-->
                 <!--<div id="cards_value"></div>-->
             </div>
         </div>
     </div>
     <div class="container-fluid col-md-4">
-        <div class='container-fluid col-md-12 text-center'>
-            <input type="button" id="stay" value="STAY" />
-        </div>
-        <div class='container-fluid col-md-12 text-center'>
-            <input type="button" id="hit" value="HIT" />
-        </div>
+        <form id="hitNstay">
+            <div class='container-fluid col-md-12 text-center'>
+                <input type="button" id="stay" value="STAY" />
+            </div>
+            <div class='container-fluid col-md-12 text-center'>
+                <input type="button" id="hit" value="HIT" />
+            </div>
+        </form>
         <div id="declare-winner"></div>
     </div>
     <div class='container-fluid col-md-4'>

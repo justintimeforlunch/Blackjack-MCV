@@ -56,6 +56,7 @@ function DealerHand() {
         if (PlayingCards[value].number_remaining === 0) {
             value = Math.floor(Math.random() * PlayingCards.length);
         } //end if statement
+        PlayingCards[value].number_remaining--;
         var dealerCardValues = PlayingCards[value].card;
         //dealerCardValues += PlayingCards[value].card;
         var cardImageUrl = 'img/PlayingCards/PlayingCards';
@@ -72,10 +73,11 @@ function DealerHand() {
     //dealerCards += "<img id='play-cards class='card-piece' src='" + dealerCardValues + 'a' + ".png" + "></img>";        
     //dealerCards += "<img id='play-cards" + "' class='card-piece" + card_value + 'a' + "' src='" + cardImageUrl + card_value + 'a' + ".png" + "'></img>";
 }
-
+var PlayerCardHitValue = '';
 //TODO: Generate a new card to add to the current 2 cards of the user.
 //      Needs to generate the cards out of the pool of remaining cards
 $("#hit").click(function() {
+    //var cardHitValue = '';
     //generate one new card from deck
     var value = Math.floor(Math.random() * PlayingCards.length);
     if (PlayingCards[value].number_remaining === 0) {
@@ -88,42 +90,63 @@ $("#hit").click(function() {
 
     playerTotalScore += PlayingCards[value].value;
 
-
-    var cardHitValue = "<img id='play-cards" + "' class='card-piece" + card_value + 'a' + "' src='" + cardImageUrl + card_value + 'a' + ".png" + "'></img>";
-    $('#playerScore').replaceWith(playerTotalScore);
-    $('#card_hit').html(cardHitValue);
+    PlayerCardHitValue += "<img id='play-cards" + "' class='card-piece" + card_value + 'a' + "' src='" + cardImageUrl + card_value + 'a' + ".png" + "'></img>";
+    $('#playerScore').text(playerTotalScore);
+    $('#card_hit').html(PlayerCardHitValue);    
 });
 
 //TODO: Able to hit more than once card
 $("#stay").click(function() {
-    //if Dealer's score is less than 16, then hit and generate a new card
-    while (dealerTotalScore < 16) {
-        var value = Math.floor(Math.random() * PlayingCards.length);
+    var cardHitValue = '';
+    if (dealerTotalScore < playerTotalScore) {
+        //if Dealer's score is less than 16, then hit and generate a new card
+        while (dealerTotalScore < 16) {
+            var value = Math.floor(Math.random() * PlayingCards.length);
 
-        if (PlayingCards[value].number_remaining === 0) {
-            value = Math.floor(Math.random() * PlayingCards.length);
-        } //end if statement
-        var card_value = PlayingCards[value].card;
-        var cardImageUrl = 'img/PlayingCards/PlayingCards';
+            if (PlayingCards[value].number_remaining === 0) {
+                value = Math.floor(Math.random() * PlayingCards.length);
+            } //end if statement
+            var card_value = PlayingCards[value].card;
+            var cardImageUrl = 'img/PlayingCards/PlayingCards';
 
-        dealerTotalScore += PlayingCards[value].value;
-        var cardHitValue = "<img id='play-cards" + "' class='card-piece" + card_value + 'a' + "' src='" + cardImageUrl + card_value + 'a' + ".png" + "'></img>";
-        $('#dealerScore').replaceWith(dealerTotalScore);
-        $('#dealer_hit').html(cardHitValue);
-    } //end while statement
+            dealerTotalScore += PlayingCards[value].value;
+            cardHitValue += "<img id='play-cards" + "' class='card-piece" + card_value + 'a' + "' src='" + cardImageUrl + card_value + 'a' + ".png" + "'></img>";
+
+            $('#dealer_hit').html(cardHitValue);
+        } //end while statement
+    }
+    $('#dealerScore').replaceWith(dealerTotalScore);
+    $('#playerScore').replaceWith(playerTotalScore);
     winner();
 });
 
 //TODO: If it is even
 function winner() {
+    $('#dealerScore').replaceWith(dealerTotalScore);
     var winner = "";
-    if (playerTotalScore > dealerTotalScore && playerTotalScore < 21) {
+    if ((dealerTotalScore > 21 && playerTotalScore > 21) || (dealerTotalScore === playerTotalScore)) {
+        winner = "<div class='text-center'>Tied Game. Pushed!</div>";
+        $("#declare-winner").html(winner)
+    }
+    console.log(playerTotalScore);
+    console.log(dealerTotalScore);
+    if (playerTotalScore <= 21 && (playerTotalScore > dealerTotalScore) || dealerTotalScore > 21) {
+        if (dealerTotalScore === 21) {
+            winner = "<div class='text-center'>Blackjack! Player Wins!</div>";
+            $("#declare-winner").html(winner);
+            return;
+        }
         winner = "<div class='text-center'>Player Wins!</div>";
-        $("#declare-winner").html(winner)
-    } else {
+        $("#declare-winner").html(winner);
+    }
+    if (dealerTotalScore <= 21 && (dealerTotalScore > playerTotalScore)) {
+        if (dealerTotalScore === 21) {
+            winner = "<div class='text-center'> Blackjack! Dealer Wins!</div>";
+            $("#declare-winner").html(winner);
+            return;
+        }
         winner = "<div class='text-center'>Dealer Wins!</div>";
-        $("#declare-winner").html(winner)
-            //dealer win
+        $("#declare-winner").html(winner);
     }
     return;
 }
@@ -134,7 +157,7 @@ PlayingCards[0] = { //Card: 2
     "value": 2,
     "original_distribution": 4,
     "number_remaining": 4
-}; 
+};
 PlayingCards[1] = { //Card: 3
     "card": "3",
     "value": 3,
@@ -152,7 +175,7 @@ PlayingCards[3] = { //Card: 5
     "value": 5,
     "original_distribution": 4,
     "number_remaining": 4
-}; 
+};
 PlayingCards[4] = { //Card: 6
     "card": "6",
     "value": 6,
@@ -182,13 +205,13 @@ PlayingCards[8] = { //Card: 10
     "value": 10,
     "original_distribution": 4,
     "number_remaining": 4
-}; 
+};
 PlayingCards[9] = { //Card: Jack
     "card": "11",
     "value": 10,
     "original_distribution": 4,
     "number_remaining": 4
-}; 
+};
 PlayingCards[10] = { //Card: Queen
     "card": "12",
     "value": 10,
