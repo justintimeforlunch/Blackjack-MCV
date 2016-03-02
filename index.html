@@ -10,12 +10,13 @@
     <title>
         Blackjack - Justin Nguyen
     </title>
-    <!--
+<!--     
     Name: Justin Nguyen                                                         
-    Contact: justintimenguyen@gmail.com                                                                           School: University of Massachusetts Lowell                                                                    Date Updated: February 16, 2016                                                                               Description: Implementing Blackjack using the MVC method        
+    Contact: justintimenguyen@gmail.com                                                                           School: University of Massachusetts Lowell                                                                    Date Updated: March 1, 2016                                                                               Description: Implementing Blackjack using the MVC method        
     Copyright [2016] by Justin Nguyen. All rights reserved.                                    
     May be freely copied or excerpted for educational purposes with credit to the author.
-    -->
+     -->
+     
     <!--Font-->
     <link href='https://fonts.googleapis.com/css?family=Merriweather:400,300|Montserrat' rel='stylesheet' type='text/css'>
     <!--CSS-->
@@ -27,41 +28,26 @@
 <body>
     <div class='text-center title'>Blackjack</div>
     <!--Main description-->
-    <div class='container-fluid col-md-4'>
+    <div class='container-fluid col-md-6'>
         <div class='text-center title'>
             Player's Cards
         </div>
         <hr>
         <div class="bigg add-space">
-            <!--<img id='blackjack-table'src='img/blackjack-table.png'></img>-->
             <div class='text-center'>
                 <span id="cards"></span>
                 <span id="card_hit"></span>
                 <br>
                 <div class="player-cards" id='playerScore'></div>
-                <!--Card value test-->
-                <!--<div id="cards_value"></div>-->
             </div>
         </div>
     </div>
-    <div class="container-fluid col-md-4">
-        <form id="hitNstay">
-            <div class='container-fluid col-md-12 text-center'>
-                <input type="button" id="stay" value="STAY" />
-            </div>
-            <div class='container-fluid col-md-12 text-center'>
-                <input type="button" id="hit" value="HIT" />
-            </div>
-        </form>
-        <div id="declare-winner"></div>
-    </div>
-    <div class='container-fluid col-md-4'>
+        <div class='container-fluid col-md-4'>
         <div class='text-center title'>
             Dealer's Cards
         </div>
         <hr>
         <div class="bigg add-space">
-            <!--<img id='blackjack-table2'src='img/blackjack-table.png'></img>-->
             <div class='text-center'>
                 <div id="dealer_cards"></div>
                 <div id='dealer_hit'></div>
@@ -69,9 +55,26 @@
             </div>
         </div>
     </div>
+    <div class="container-fluid col-md-12">
+        <form id="hitNstay">
+            <div class='container-fluid col-md-12 text-center'>
+                <input type="button" id="stay" value="STAY" />
+            </div>
+            <div class='container-fluid col-md-12 text-center'>
+                <input type="button" id="hit" value="HIT" />
+            </div>
+            <div class='container-fluid col-md-12 text-center'>
+            <input type="button" value="New Hand" onClick="window.location.href=window.location.href">
+        </div>
+        </form>
+        <div id="declare-winner"></div>
+    </div>
+
+    <div class='container-fluid col-md-12 text-center'>
     <footer class='text-center'>
-        Updated February 2016
+        Updated March 2016
     </footer>
+</div>
     <!-- jQuery -->
     <script src="js/jquery.js" type="text/javascript">
     </script>
