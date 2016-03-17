@@ -34,6 +34,8 @@ var numOfElements = BJ_CARDS.numberOfCards; //keeps track of the number of diffe
 //keeps track fo total player score of the player and dealer
 var dealerTotalScore = 0;
 var playerTotalScore = 0;
+var playerCheckIfAce = 0;
+var dealerCheckIfAce = 0;
 
 //generates cards in the Player's hand
 function generateCards() {
@@ -49,13 +51,19 @@ function generateCards() {
         } //end of if statement
 
         var cards_value = BJ_CARDS.PlayingCards[value].card;
+        if (cards_value === 14) {
+            playerCheckIfAce = 1;
+
+        }
         var cardImageUrl = 'img/PlayingCards/PlayingCards';
 
         cards += "<img id='play-cards" + "' class='card-piece" + cards_value + 'a' + "' src='" + cardImageUrl + cards_value + 'a' + ".png" + "'></img>";
 
         playerTotalScore += BJ_CARDS.PlayingCards[value].value;
     } //end of forloop
-
+    if (playerCheckIfAce == 1 && playerTotalScore < 12) {
+        playerTotalScore =+ 10;
+    }
     //insert values into HTML
     $('#cards_value').html(cards_value);
     $('#cards').html(cards);
@@ -77,15 +85,20 @@ function DealerHand() {
         BJ_CARDS.PlayingCards[value].number_remaining--;
         var dealerCardValues = BJ_CARDS.PlayingCards[value].card;
         //dealerCardValues += BJ_CARDS.PlayingCards[value].card;
+        var cardBackImgUrl = 'img/PlayingCards/';
         var cardImageUrl = 'img/PlayingCards/PlayingCards';
+        if (dealerCardValues === 14) {
+            dealerCheckIfAce = 1;
 
+        }
         //dealerCardScore = generateScore(BJ_CARDS.PlayingCards[value].value);
         dealerTotalScore += BJ_CARDS.PlayingCards[value].value;
         //need to make it able to put both card-values in the array but only display 1 and display a facedown card
-        dealerCards += "<img id='play-cards" + "' class='card-piece" + dealerCardValues + 'a' + "' src='" + cardImageUrl + dealerCardValues + 'a' + ".png" + "'></img>";
-
+        //dealerCards += "<img id='play-cards" + "' class='card-piece" + dealerCardValues + 'a' + "' src='" + cardImageUrl + dealerCardValues + 'a' + ".png" + "'></img>";
+        //dealerCards += "<img id='play-cards" + "' class='card-piece" + dealerCardValues + 'a' + "' src='" + cardImageUrl + "golden-cardback.png" + "'></img>";
     } //end forloop
-
+    dealerCards += "<img id='play-cards" + "' class='card-piece" + dealerCardValues + 'a' + "' src='" + cardBackImgUrl + "golden-cardback.png" + "'></img>";
+    dealerCards += "<img id='play-cards" + "' class='card-piece" + dealerCardValues + 'a' + "' src='" + cardImageUrl + dealerCardValues + 'a' + ".png" + "'></img>";
     //insert values into HTML
     $('#dealer_value').html(dealerCardValues);
     $('#dealerScore').html(dealerTotalScore);
@@ -111,7 +124,12 @@ $("#hit").click(function() {
 
 
     playerTotalScore += BJ_CARDS.PlayingCards[value].value;
-
+    if (playerCheckIfAce == 1 && playerTotalScore < 12) {
+        playerTotalScore =+ 10;
+    }
+    else if (playerCheckIfAce == 1 && playerTotalScore >= 12){
+        playerTotalScore =- 10;
+    }
     PlayerCardHitValue += "<img id='play-cards" + "' class='card-piece" + card_value + 'a' + "' src='" + cardImageUrl + card_value + 'a' + ".png" + "'></img>";
     
     //insert values into HTML
@@ -132,6 +150,13 @@ $("#stay").click(function() {
             } //end if statement
             var card_value = BJ_CARDS.PlayingCards[value].card;
             var cardImageUrl = 'img/PlayingCards/PlayingCards';
+
+                if (dealerCheckIfAce == 1 && dealerCheckIfAce < 12) {
+        dealerTotalScore =+ 10;
+    }
+    else if (dealerCheckIfAce == 1 && dealerTotalScore >= 12){
+        dealerTotalScore =- 10;
+    }
 
             dealerTotalScore += BJ_CARDS.PlayingCards[value].value;
             cardHitValue += "<img id='play-cards" + "' class='card-piece" + card_value + 'a' + "' src='" + cardImageUrl + card_value + 'a' + ".png" + "'></img>";
