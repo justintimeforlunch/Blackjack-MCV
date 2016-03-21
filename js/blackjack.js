@@ -1,7 +1,7 @@
                                                                                                                                                          
  // Name: Justin Nguyen                                                                                                                                        
  // Contact: justintimenguyen@gmail.com                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
- // Date Updated: March 1, 2016                                                                                                                                                                                                                              
+ // Date Updated: March 21, 2016                                                                                                                                                                                                                              
  // Description: Implementing Blackjack using the MVC method        
  // Copyright [2016] by Justin Nguyen. All rights reserved.                                                                                                    
  // May be freely copied or excerpted for educational purposes with credit to the author.                                                                      
@@ -15,7 +15,6 @@ $.ajax({
     url: "apps/PlayingCards.json",
     success: function (data) {
         BJ_CARDS = data;
-        console.log(BJ_CARDS);
     },
     error: function () {
         console.log("Error: json has not loaded");
@@ -36,13 +35,16 @@ var dealerTotalScore = 0;
 var playerTotalScore = 0;
 var playerCheckIfAce = 0;
 var dealerCheckIfAce = 0;
+var changeSuite = ['a', 'b', 'c', 'd'];
 
 //generates cards in the Player's hand
 function generateCards() {
     cards = '';
     var cards_value = '';
     var playerCardScore = 0;
+
     for (var i = 0; i < 2; i++) {
+        var rand = changeSuite[Math.floor(Math.random() * changeSuite.length)];
         var value = Math.floor(Math.random() * numOfElements); //randomize 2 cards
         BJ_CARDS.PlayingCards[value].number_remaining--;
 
@@ -57,7 +59,7 @@ function generateCards() {
         }
         var cardImageUrl = 'img/PlayingCards/PlayingCards';
 
-        cards += "<img id='play-cards" + "' class='card-piece" + cards_value + 'a' + "' src='" + cardImageUrl + cards_value + 'a' + ".png" + "'></img>";
+        cards += "<img id='play-cards" + "' class='card-piece" + cards_value + 'a' + "' src='" + cardImageUrl + cards_value + rand + ".png" + "'></img>";
 
         playerTotalScore += BJ_CARDS.PlayingCards[value].value;
     } //end of forloop
@@ -73,38 +75,38 @@ function generateCards() {
 //TODO: Fix how the card are displayed
 //      This should also be taking away values from the deck
 //will generate the cards in the Dealer's hand
+var dealerValueHand = [];
+var dealerHiddenCard = '';
+
 function DealerHand() {
     dealerCards = '';
     var dealerCardValues = '';
     var dealerCardScore = 0;
     for (var i = 0; i < 2; i++) {
+        var rand = changeSuite[Math.floor(Math.random() * changeSuite.length)];
         var value = Math.floor(Math.random() * numOfElements); //randomize 2 cards
         if (BJ_CARDS.PlayingCards[value].number_remaining === 0) {
             value = Math.floor(Math.random() * numOfElements);
         } //end if statement
         BJ_CARDS.PlayingCards[value].number_remaining--;
         var dealerCardValues = BJ_CARDS.PlayingCards[value].card;
+        dealerValueHand.push(BJ_CARDS.PlayingCards[value].card);
         //dealerCardValues += BJ_CARDS.PlayingCards[value].card;
         var cardBackImgUrl = 'img/PlayingCards/';
         var cardImageUrl = 'img/PlayingCards/PlayingCards';
         if (dealerCardValues === 14) {
             dealerCheckIfAce = 1;
-
         }
-        //dealerCardScore = generateScore(BJ_CARDS.PlayingCards[value].value);
         dealerTotalScore += BJ_CARDS.PlayingCards[value].value;
         //need to make it able to put both card-values in the array but only display 1 and display a facedown card
-        //dealerCards += "<img id='play-cards" + "' class='card-piece" + dealerCardValues + 'a' + "' src='" + cardImageUrl + dealerCardValues + 'a' + ".png" + "'></img>";
-        //dealerCards += "<img id='play-cards" + "' class='card-piece" + dealerCardValues + 'a' + "' src='" + cardImageUrl + "golden-cardback.png" + "'></img>";
     } //end forloop
-    dealerCards += "<img id='play-cards" + "' class='card-piece" + dealerCardValues + 'a' + "' src='" + cardBackImgUrl + "golden-cardback.png" + "'></img>";
+    dealerCards += "<img id='hidden-card" + "' class='card-piece" + dealerCardValues + 'a' + "' src='" + cardBackImgUrl + "golden-cardback.png" + "'></img>";
     dealerCards += "<img id='play-cards" + "' class='card-piece" + dealerCardValues + 'a' + "' src='" + cardImageUrl + dealerCardValues + 'a' + ".png" + "'></img>";
+    console.log(dealerValueHand);
     //insert values into HTML
     $('#dealer_value').html(dealerCardValues);
-    $('#dealerScore').html(dealerTotalScore);
+    //$('#dealerScore').html(dealerTotalScore);
     $('#dealer_cards').html(dealerCards);
-    //dealerCards += "<img id='play-cards class='card-piece' src='" + dealerCardValues + 'a' + ".png" + "></img>";        
-    //dealerCards += "<img id='play-cards" + "' class='card-piece" + card_value + 'a' + "' src='" + cardImageUrl + card_value + 'a' + ".png" + "'></img>";
 } //end of function DealerHand()
 
 
@@ -112,8 +114,8 @@ var PlayerCardHitValue = '';
 //TODO: Generate a new card to add to the current 2 cards of the user.
 //      Needs to generate the cards out of the pool of remaining cards
 $("#hit").click(function() {
-    //var cardHitValue = '';
     //generate one new card from deck
+    var rand = changeSuite[Math.floor(Math.random() * changeSuite.length)];
     var value = Math.floor(Math.random() * numOfElements);
     if (BJ_CARDS.PlayingCards[value].number_remaining === 0) {
         value = Math.floor(Math.random() * numOfElements);
@@ -130,7 +132,7 @@ $("#hit").click(function() {
     else if (playerCheckIfAce == 1 && playerTotalScore >= 12){
         playerTotalScore =- 10;
     }
-    PlayerCardHitValue += "<img id='play-cards" + "' class='card-piece" + card_value + 'a' + "' src='" + cardImageUrl + card_value + 'a' + ".png" + "'></img>";
+    PlayerCardHitValue += "<img id='play-cards" + "' class='card-piece" + card_value + 'a' + "' src='" + cardImageUrl + card_value + rand + ".png" + "'></img>";
     
     //insert values into HTML
     $('#playerScore').text(playerTotalScore);
@@ -139,6 +141,18 @@ $("#hit").click(function() {
 
 //TODO: Able to hit more than once card
 $("#stay").click(function() {
+    //disable stay and hit button.
+    $(this).prop('disabled', true);
+    $("#hit").prop('disabled', true);
+
+    //reveal hidden card
+    var cardImageUrl = 'img/PlayingCards/PlayingCards';
+
+    for(i = 0; i < 2; i++) {
+        dealerHiddenCard += "<img id='play-cards" + "' class='card-piece" + 'a' + "' src='" + cardImageUrl + dealerValueHand[i] + 'a' + ".png" + "'></img>";
+    } //end forloop
+
+    $('#dealer_cards').html(dealerHiddenCard);
     var cardHitValue = '';
     if (dealerTotalScore < playerTotalScore) {
         //if Dealer's score is less than 16, then hit and generate a new card
@@ -157,9 +171,9 @@ $("#stay").click(function() {
     else if (dealerCheckIfAce == 1 && dealerTotalScore >= 12){
         dealerTotalScore =- 10;
     }
-
+            var rand = changeSuite[Math.floor(Math.random() * changeSuite.length)];
             dealerTotalScore += BJ_CARDS.PlayingCards[value].value;
-            cardHitValue += "<img id='play-cards" + "' class='card-piece" + card_value + 'a' + "' src='" + cardImageUrl + card_value + 'a' + ".png" + "'></img>";
+            cardHitValue += "<img id='play-cards" + "' class='card-piece" + card_value + 'a' + "' src='" + cardImageUrl + card_value + rand + ".png" + "'></img>";
 
             $('#dealer_hit').html(cardHitValue);
         } //end while statement

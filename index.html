@@ -42,20 +42,23 @@
             </div>
         </div>
     </div>
-        <div class='container-fluid col-md-4'>
+        <div class='container-fluid col-md-6'>
         <div class='text-center title'>
             Dealer's Cards
         </div>
         <hr>
         <div class="bigg add-space">
             <div class='text-center'>
-                <div id="dealer_cards"></div>
-                <div id='dealer_hit'></div>
-                <div id='dealerScore'></div>
+                <span id="dealer_cards"></span>
+                <span id='dealer_hit'></span>
+                <br>
+                <span class="player-cards" id='dealerScore'></span>
             </div>
         </div>
     </div>
     <div class="container-fluid col-md-12">
+        <span id="declare-winner"></span>
+        <br>
         <form id="hitNstay">
             <div class='container-fluid col-md-12 text-center'>
                 <input type="button" id="stay" value="STAY" />
@@ -67,7 +70,6 @@
             <input type="button" value="New Hand" onClick="window.location.href=window.location.href">
         </div>
         </form>
-        <div id="declare-winner"></div>
     </div>
 
     <div class='container-fluid col-md-12 text-center'>
