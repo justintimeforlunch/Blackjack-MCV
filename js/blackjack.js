@@ -1,4 +1,4 @@
-                                                                                                                                                         
+
  // Name: Justin Nguyen                                                                                                                                        
  // Contact: justintimenguyen@gmail.com                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
  // Date Updated: March 21, 2016                                                                                                                                                                                                                              
@@ -117,6 +117,8 @@ $("#hit").click(function() {
     //generate one new card from deck
     var rand = changeSuite[Math.floor(Math.random() * changeSuite.length)];
     var value = Math.floor(Math.random() * numOfElements);
+
+    var bust = '';
     if (BJ_CARDS.PlayingCards[value].number_remaining === 0) {
         value = Math.floor(Math.random() * numOfElements);
     } //end if statement
@@ -133,10 +135,17 @@ $("#hit").click(function() {
         playerTotalScore =- 10;
     }
     PlayerCardHitValue += "<img id='play-cards" + "' class='card-piece" + card_value + 'a' + "' src='" + cardImageUrl + card_value + rand + ".png" + "'></img>";
-    
     //insert values into HTML
     $('#playerScore').text(playerTotalScore);
-    $('#card_hit').html(PlayerCardHitValue);    
+    $('#card_hit').html(PlayerCardHitValue); 
+
+    //If player's score goes over 21, automatically lose. 
+    if(playerTotalScore > 21) {
+        $("#stay").prop('disabled', true);
+        $("#hit").prop('disabled', true);
+        bust += "<div class='text-center'>Bust! Dealer Wins!</div>";
+        $("#declare-winner").html(bust);
+    }  
 }); //end of function
 
 //TODO: Able to hit more than once card
