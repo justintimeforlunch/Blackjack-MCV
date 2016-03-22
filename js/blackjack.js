@@ -33,8 +33,10 @@ var numOfElements = BJ_CARDS.numberOfCards; //keeps track of the number of diffe
 //keeps track fo total player score of the player and dealer
 var dealerTotalScore = 0;
 var playerTotalScore = 0;
+//check if there is an Ace in hand or not.
 var playerCheckIfAce = 0;
 var dealerCheckIfAce = 0;
+//randomize suites
 var changeSuite = ['a', 'b', 'c', 'd'];
 
 //generates cards in the Player's hand
@@ -53,9 +55,9 @@ function generateCards() {
         } //end of if statement
 
         var cards_value = BJ_CARDS.PlayingCards[value].card;
-        if (cards_value === 14) {
+        if (cards_value == 14) {
             playerCheckIfAce = 1;
-
+            console.log("Yes, Ace");
         }
         var cardImageUrl = 'img/PlayingCards/PlayingCards';
 
@@ -63,8 +65,15 @@ function generateCards() {
 
         playerTotalScore += BJ_CARDS.PlayingCards[value].value;
     } //end of forloop
-    if (playerCheckIfAce == 1 && playerTotalScore < 12) {
-        playerTotalScore =+ 10;
+
+    //if player generates an ace, add 10
+    if (playerCheckIfAce == 1) {
+        playerTotalScore = playerTotalScore + 10;
+    }
+
+    //automatically win if Blackjack
+    if(playerTotalScore === 21){
+        winner();
     }
     //insert values into HTML
     $('#cards_value').html(cards_value);
@@ -72,9 +81,7 @@ function generateCards() {
     $('#playerScore').html(playerTotalScore);
 } //end of function generateCards()
 
-//TODO: Fix how the card are displayed
-//      This should also be taking away values from the deck
-//will generate the cards in the Dealer's hand
+//keep track of what is in the dealer's hand.
 var dealerValueHand = [];
 var dealerHiddenCard = '';
 
@@ -102,7 +109,6 @@ function DealerHand() {
     } //end forloop
     dealerCards += "<img id='hidden-card" + "' class='card-piece" + dealerCardValues + 'a' + "' src='" + cardBackImgUrl + "golden-cardback.png" + "'></img>";
     dealerCards += "<img id='play-cards" + "' class='card-piece" + dealerCardValues + 'a' + "' src='" + cardImageUrl + dealerCardValues + 'a' + ".png" + "'></img>";
-    console.log(dealerValueHand);
     //insert values into HTML
     $('#dealer_value').html(dealerCardValues);
     //$('#dealerScore').html(dealerTotalScore);
@@ -128,11 +134,15 @@ $("#hit").click(function() {
 
 
     playerTotalScore += BJ_CARDS.PlayingCards[value].value;
+
+    //Ace Logic, if under 11, add 10 else minus 10.
     if (playerCheckIfAce == 1 && playerTotalScore < 12) {
-        playerTotalScore =+ 10;
+        playerTotalScore = playerTotalScore + 10;
+        playerCheckIfAce = 0;
     }
     else if (playerCheckIfAce == 1 && playerTotalScore >= 12){
-        playerTotalScore =- 10;
+        playerTotalScore = playerTotalScore - 10;
+        playerCheckIfAce = 0;
     }
     PlayerCardHitValue += "<img id='play-cards" + "' class='card-piece" + card_value + 'a' + "' src='" + cardImageUrl + card_value + rand + ".png" + "'></img>";
     //insert values into HTML
@@ -197,14 +207,14 @@ $("#stay").click(function() {
 // Next check if player has a higher score than dealer, but not over 21, if so, Player wins.
 // Lastly, check if dealer has a high a higher score than player, but not over 21, if so, Dealer wins.
 function winner() {
-    $('#dealerScore').replaceWith(dealerTotalScore);
+    //$('#dealerScore').replaceWith(dealerTotalScore);
     var winner = "";
     if ((dealerTotalScore > 21 && playerTotalScore > 21) || (dealerTotalScore === playerTotalScore)) {
         winner = "<div class='text-center'>Tied Game. Pushed!</div>";
         $("#declare-winner").html(winner)
     } //end of if statement
     if (dealerTotalScore > 21 || (playerTotalScore <= 21 && (playerTotalScore > dealerTotalScore))) {
-        if (dealerTotalScore === 21) {
+        if (playerTotalScore === 21) {
             winner = "<div class='text-center'>Blackjack! Player Wins!</div>";
             $("#declare-winner").html(winner);
             return;
