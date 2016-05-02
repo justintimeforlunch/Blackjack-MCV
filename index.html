@@ -10,13 +10,12 @@
     <title>
         Blackjack - Justin Nguyen
     </title>
-<!--     
+    <!--     
     Name: Justin Nguyen                                                         
-    Contact: justintimenguyen@gmail.com                                                                           School: University of Massachusetts Lowell                                                                    Date Updated: March 1, 2016                                                                               Description: Implementing Blackjack using the MVC method        
+    Contact: justintimenguyen@gmail.com                                                                           School: University of Massachusetts Lowell                                                                    Date Updated: May 1, 2016                                                                               Description: Implementing Blackjack using the MVC method        
     Copyright [2016] by Justin Nguyen. All rights reserved.                                    
     May be freely copied or excerpted for educational purposes with credit to the author.
      -->
-     
     <!--Font-->
     <link href='https://fonts.googleapis.com/css?family=Merriweather:400,300|Montserrat' rel='stylesheet' type='text/css'>
     <!--CSS-->
@@ -35,48 +34,46 @@
         <hr>
         <div class="bigg add-space">
             <div class='text-center'>
-                <span id="cards"></span>
-                <span id="card_hit"></span>
+                <span id="playerCards"></span>
                 <br>
-                <div class="player-cards" id='playerScore'></div>
+                <span class="player-cards" id='playerScore'></span>
             </div>
         </div>
     </div>
-        <div class='container-fluid col-md-6'>
+    <div class='container-fluid col-md-6'>
         <div class='text-center title'>
             Dealer's Cards
         </div>
         <hr>
         <div class="bigg add-space">
             <div class='text-center'>
-                <span id="dealer_cards"></span>
-                <span id='dealer_hit'></span>
+                <span id="dealerCards"></span>
                 <br>
                 <span class="player-cards" id='dealerScore'></span>
             </div>
         </div>
     </div>
-    <div class="container-fluid col-md-12">
-        <span id="declare-winner"></span>
+    <div class="container-fluid col-md-12 text-center">
+        <span id="declareWinner" class="text-center"></span>
+        <br>
         <br>
         <form id="hitNstay">
             <div class='container-fluid col-md-12 text-center'>
-                <input type="button" id="stay" value="STAY" />
+                <input name="stay" type="button" id="stay" value="STAY" />
             </div>
             <div class='container-fluid col-md-12 text-center'>
-                <input type="button" id="hit" value="HIT" />
+                <input name="hit" type="button" id="hit" value="HIT" />
             </div>
             <div class='container-fluid col-md-12 text-center'>
-            <input type="button" value="New Hand" onClick="window.location.href=window.location.href">
-        </div>
+                <input name="restart" type="button" id="restart" value="RESTART" />
+            </div>
         </form>
     </div>
-
     <div class='container-fluid col-md-12 text-center'>
-    <footer class='text-center'>
-        Updated March 2016
-    </footer>
-</div>
+        <footer class='text-center'>
+            Updated May 2016
+        </footer>
+    </div>
     <!-- jQuery -->
     <script src="js/jquery.js" type="text/javascript">
     </script>
@@ -93,7 +90,11 @@
     <!-- Custom JavaScript -->
     <script src="js/main.js" type="text/javascript">
     </script>
-    <script src="js/blackjack.js" type="text/javascript">
+    <script src="js/blackjack/model.js" type="text/javascript">
+    </script>
+    <script src="js/blackjack/view.js" type="text/javascript">
+    </script>
+    <script src="js/blackjack/controller.js" type="text/javascript">
     </script>
 </body>
 
