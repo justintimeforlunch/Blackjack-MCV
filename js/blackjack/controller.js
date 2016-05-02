@@ -68,6 +68,7 @@ GameController.prototype = {
     //put the suites and cards back into the deck
     restart: function() {
         this.view.showWinner("");
+        this.view.showScore("", "dealer");
         this.model.restartSuites(this.model.getPlayerSuites(), "player");
         this.model.restartSuites(this.model.getDealerSuites(), "dealer");
         this.model.restartDeck(this.model.getPlayerHand());

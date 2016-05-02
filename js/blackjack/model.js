@@ -36,6 +36,7 @@ GameModel.prototype = {
         this.dealerScore = 0;
         this.dealerHand = [];
         this.dealerSuites = [];
+        this.face = 0;
     },
     //put cards back into the deck
     restartDeck: function(cards) {
