@@ -32,6 +32,8 @@ GameController.prototype = {
         //if hit over 21, dealer automatically wins
         if (this.model.getPlayerScore() > 21) {
             this.view.showWinner("Dealer Wins!");
+            $("#hit").prop('disabled', true);
+            $("#stay").prop('disabled', true);
         }
     },
     //when player stays, dealer generates new cards if < playerScore
@@ -65,6 +67,7 @@ GameController.prototype = {
     },
     //put the suites and cards back into the deck
     restart: function() {
+        this.view.showWinner("");
         this.model.restartSuites(this.model.getPlayerSuites(), "player");
         this.model.restartSuites(this.model.getDealerSuites(), "dealer");
         this.model.restartDeck(this.model.getPlayerHand());
