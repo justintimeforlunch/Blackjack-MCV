@@ -12,6 +12,8 @@ function GameView() {
     });
 
     $("#restart").click(function() {
+        $("#stay").prop('disabled', false);
+        $("#hit").prop('disabled', false);
         controller.restart();
     });
 }
