@@ -31,7 +31,12 @@ GameController.prototype = {
         this.view.dealTheHand(this.model.getPlayerHand(), this.model.getPlayerSuites(), this.model.getFace(), "player");
         //if hit over 21, dealer automatically wins
         if (this.model.getPlayerScore() > 21) {
+            this.model.hiddenCard(1);
+            this.view.dealTheHand(this.model.getDealerHand(), this.model.getDealerSuites(), this.model.getFace(), "dealer");
             this.view.showWinner("Dealer Wins!");
+            this.view.showScore(this.model.getDealerScore(), "dealer");
+
+
             $("#hit").prop('disabled', true);
             $("#stay").prop('disabled', true);
         }
